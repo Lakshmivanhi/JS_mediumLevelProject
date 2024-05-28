@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-step Signup Form</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #dfd9d9;
+        
+    }
+    .step-progress {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .step {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        font-size: 16px;
+        color: #999;
+        border: 2px solid #999;
+        background-color: #fff;
+    }
+    .step.active {
+        color: #333;
+        border-color: #333;
+    }
+    .step.completed {
+        color: #4CAF50;
+        border-color: #4CAF50;
+    }
+    .line {
+        flex: 1;
+        height: 2px;
+        background-color: #999;
+    }
+    .step:not(:first-child) {
+        margin-left: 5px;
+    }
+    .step:first-child {
+        margin-left: 0;
+    }
+    .step-line {
+        flex: 1;
+        height: 3px;
+        border-radius: 5px;
+        background-color: #999;
+        background-color: rgb(240, 130, 148);
+    }
+    .step-line:not(:last-child) {
+        margin-left: 5px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input[type="text"], input[type="tel"], input[type="email"], input[type="password"],  input[type="date"], select{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    .password-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+    }
+    .password-input-container .error-message{
+        margin-left: 20px;
+    }
+    #toggle-password {
+        cursor: pointer;
+        margin-left: -30px; 
+    }
+    .btn {
+        padding: 10px 20px;
+        color: black;
+        font-weight: bold;
+        font-weight: 900;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        background: rgb(210, 103, 200); 
+        backdrop-filter: blur(10px); 
+        transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+        border-radius: 10px;
+        background: rgba(17, 217, 227, 0.673); 
+    }
+    .transition {
+        transition: all 0.3s ease;
+    }
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+    .valid-input {
+        color: green;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+    #passwordValid{
+        margin-left: 30px;
+    }
+    .password-field .error-message {
+        margin-top: 10px; 
+    }
+    .invalid-input {
+        border: 2px solid red;
+    }
+    
+    
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 style="text-align: center;">SignUp Form</h1>
+    <div class="step-progress">
+        <div class="step">1</div>
+        <div class="step-line"></div>
+        <div class="step">2</div>
+        <div class="step-line"></div>
+        <div class="step">3</div>
+        <div class="step-line"></div>
+        <div class="step">4</div>
+    </div>
+    <div class="error-message" style="color: red; margin-bottom: 10px;"></div>
+    <form id="signupForm" autocomplete="off" method="post">
+        <div class="step-content">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <div class="error-message" id="firstNameError"></div>
+                <div class="valid-input" id="firstNameValid">Valid input</div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label >
+                <input type="text" id="lastName" name="lastName" required>
+                <div class="error-message" id="lastNameError"></div>
+                <div class="valid-input" id="lastNameValid">Valid input</div>
+            </div>
+            <button type="button" class="btn next transition">Next</button>
+        </div>
+        <div class="step-content" style="display: none;">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+                <div class="valid-input" id="emailValid">Valid input</div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+                <div class="error-message" id="phoneError"></div>
+                <div class="valid-input" id="phoneValid">Valid input</div>
+            </div>
+            <button type="button" class="btn prev">Back</button>
+            <button type="button" class="btn next">Next</button>
+        </div>
+        <div class="step-content" style="display: none;">
+            <div class="form-group">
+                <label for="birthdate">Birthdate:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+                <div class="error-message" id="birthdateError"></div>
+                <div class="valid-input" id="birthdateValid">Valid input</div>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="error-message" id="genderError"></div>
+                <div class="valid-input" id="genderValid">Valid input</div>
+            </div>
+            <button type="button" class="btn prev">Back</button>
+            <button type="button" class="btn next">Next</button>
+        </div>
+        <div class="step-content" style="display: none;">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <div class="error-message" id="usernameError"></div>
+                <div class="valid-input" id="usernameValid">Valid input</div>
+            </div>
+            <div class="form-group password-field">
+                <label for="password">Password:</label required>
+                <div class="password-input-container">
+                    <input type="password" id="password" name="password" required>
+                    <div id="toggle-password"><i class="fa-regular fa-eye-slash"></i></div>
+                    <div class="error-message" id="passwordError"></div>
+                    <div class="valid-input" id="passwordValid">Valid input</div>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="retypePassword">Retype Password:</label>
+                <input type="password" id="retypePassword" name="retypePassword" required>
+                <div class="error-message" id="retypePasswordError"></div>
+                <div class="valid-input" id="retypePasswordValid">Valid input</div>
+            </div>
+            <button type="button" class="btn prev">Back</button>
+            <button type="submit" class="btn">Submit</button>
+        </div>
+    </form>
+</div> 
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('signupForm');
+    const steps = document.querySelectorAll('.step-content');
+    const stepProgress = document.querySelector('.step-progress');
+    const errorMessage = document.querySelector('.error-message');
+
+    let currentStep = 0;
+
+    function showStep(step) {
+        steps.forEach((step, index) => {
+            if (index === currentStep) {
+                step.style.display = 'block';
+            } else {
+                step.style.display = 'none';
+            }
+        });
+        updateStepProgress();
+    }
+
+    function updateStepProgress() {
+        const stepElements = stepProgress.querySelectorAll('.step');
+
+        stepElements.forEach((step, index) => {
+            if (index < currentStep) {
+                step.classList.add('completed');
+                step.innerHTML = '✓'; // Add tick mark (checkmark) icon
+                step.style.backgroundColor="green"
+                step.style.color="white"
+            } else if (index === currentStep) {
+                step.classList.add('active');
+                step.innerHTML = index + 1; // Display step number
+            } else {
+                step.classList.remove('active', 'completed');
+                step.innerHTML = index + 1; // Display step number
+            }
+        });
+    }
+
+    function validateStep(step) {
+        const inputs = steps[step].querySelectorAll('input, select');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            const error = input.parentNode.querySelector('.error-message');
+            const validInput = input.parentNode.querySelector('.valid-input');
+       
+            if (!input.checkValidity()) {
+                error.textContent = input.validationMessage;
+                validInput.textContent = ''; // Clear valid input message
+                error.style.display = 'block'; // Display error message
+                validInput.style.display = 'none'; // Hide valid input message
+                isValid = false;
+            } else if (input.id === 'password' && !validatePassword(input.value)) {
+                error.textContent = 'Password must have at least 8 characters, contain a capital letter, a lowercase letter, a number, and a special character.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else if (input.id === 'retypePassword' && input.value !== document.getElementById('password').value) {
+                error.textContent = 'Passwords do not match.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else if ((input.id === 'firstName' || input.id === 'lastName') && !/^[A-Za-z]{2,30}$/.test(input.value)) {
+                error.textContent = 'Name must contain only letters and be between 2 to 30 characters long.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else if (input.id === 'phone' && (!/^\d+$/.test(input.value) || input.value.length !== 10)) {
+                error.textContent = 'Phone must contain exactly 10 numbers.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else if (input.id === 'username' && (input.value.length < 5 || input.value.length > 30 || !/^[a-zA-Z0-9](?:[a-zA-Z0-9-_.]*[a-zA-Z0-9])?$/.test(input.value))) {
+                error.textContent = 'Username must consist of alphanumeric characters (a-zA-Z0-9), and can include dot (.), underscore (_), or hyphen (-). Dot (.), underscore (_), or hyphen (-) must not be the first or last character.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else if (input.id === 'email' && !validateEmail(input.value)) {
+                error.textContent = 'Invalid email address.';
+                validInput.textContent = '';
+                error.style.display = 'block';
+                validInput.style.display = 'none';
+                isValid = false;
+            } else {
+                error.textContent = '';
+                error.style.display = 'none'; // Hide error message
+                validInput.textContent = 'Valid input';
+                validInput.style.display = 'block'; // Display valid input message
+            }
+            
+        });
+
+        return isValid;
+        }
+        function validateEmail(email) {
+        const emailRegex =  /^[^\s@]+@[^\s@]+\.(com|in)$/;
+        return emailRegex.test(email);
+        }
+        function validatePassword(password) {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return regex.test(password);
+        }
+        let password = document.getElementById("password")
+        let togglePassword = document.getElementById("toggle-password")
+        togglePassword.onclick = function(){
+        if(password.type == "password"){
+            password.type="text";
+            togglePassword.innerHTML = "<i class='fa-regular fa-eye'></i>";
+        }else{
+            password.type="password";
+            togglePassword.innerHTML = "<i class='fa-solid fa-eye-slash'></i>"
+        }
+    }
+    function navigateToNextStep() {
+        if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    }
+
+    function navigateToPrevStep() {
+        currentStep--;
+        showStep(currentStep);
+    }
+
+    document.querySelectorAll('.next').forEach(button => {
+        button.addEventListener('click', navigateToNextStep);
+    });
+
+    document.querySelectorAll('.prev').forEach(button => {
+        button.addEventListener('click', navigateToPrevStep);
+    });
+
+    form.addEventListener('submit', function (event) {
+        if (!validateStep(currentStep)) {
+            errorMessage.textContent = 'Please fill in all required fields correctly.';
+            event.preventDefault();
+            return false;
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+            
+            // Display success message
+            alert('Form submitted successfully!');
+            
+        }
+    });
+
+    // Listen for input event on all input fields
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', function () {
+        validateStep(currentStep);
+        });
+    });
+
+    showStep(currentStep);
+});
+
+</script>
+</body>
+</html>
